@@ -1,0 +1,26 @@
+{% extends "gymapp/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+<div class="container px-5 mt-4">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="mt-4 p-2 border rounded">
+                <h3 class="text-center mt-3">Editar Persona</h3>
+                <h6 class="text-center">RUT - {{ persona.rut }}</h6>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-flex justify-content-between mt-4">
+                        <input type="submit" value="Guardar Cambios" class="btn " style="background-color: #7241b4; color: white; border-color: #7241b4;">
+                        <a href='{% url "personas" %}' role='button' class="btn btn-secondary">Volver</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+{% endblock contenido %}

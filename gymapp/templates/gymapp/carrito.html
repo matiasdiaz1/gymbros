@@ -1,0 +1,36 @@
+{% extends "gymapp/base.html" %}
+{% block contenido %}
+<div class="container">
+    <h2>Carrito de Compras</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mancuerna</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in carrito_items %}
+            <tr>
+                <td>{{ item.mancuerna.peso }} kg</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.mancuerna.precio }}</td>
+                <td>${{ item.total_price }}</td>
+                <td>
+                    <form action="{% url 'eliminar_del_carrito' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total: ${{ total }}</h3>
+    <a href="{% url 'index' %}" class="btn btn-primary">Seguir Comprando</a>
+    <a href="{% url 'checkout' %}" class="btn btn-success">Proceder al Pago</a>
+</div>
+{% endblock contenido %}

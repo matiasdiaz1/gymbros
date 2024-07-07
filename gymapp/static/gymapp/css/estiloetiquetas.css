@@ -1,0 +1,57 @@
+.preparacion{
+    background-color: rgb(226, 139, 39);
+    color:rgb(255, 238, 0);
+    border-color: rgb(255, 182, 47);
+    font-weight: bold;
+    /* border-radius:5%;
+    border-style:none; */
+    border-width: 5px;
+    font-size: smaller;
+    text-align: center;
+    padding:1%
+}
+
+.enruta{
+    background-color: rgb(255, 230, 0);
+    color:rgb(194, 66, 28);
+    border-color: rgb(255, 252, 47);
+    font-weight: bold;
+    /* border-radius:5%;
+    border-style:none; */
+    border-width: 5px;
+    font-size: smaller;
+    text-align: center;
+    padding:1%
+}
+
+.entregado{
+    background-color: rgb(151, 226, 39);
+    color:darkgreen;
+    border-color: greenyellow;
+    font-weight: bold;
+    /* border-radius:5%;
+    border-style:none; */
+    border-width: 5px;
+    font-size: smaller;
+    text-align: center;
+    padding:1%
+}
+
+.incompleta{
+    background-color: rgb(182, 39, 226);
+    color:rgb(37, 0, 21);
+    border-color: rgb(94, 0, 89);
+    font-weight: bold;
+    /* border-radius:5%;
+    border-style:none; */
+    border-width: 5px;
+    font-size: smaller;
+    text-align: center;
+    padding:1%
+}
+
+    
+
+
+
+

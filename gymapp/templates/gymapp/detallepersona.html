@@ -1,0 +1,28 @@
+{% extends "gymapp/base.html" %}
+{% load static %}
+
+
+
+{% block contenido %}
+<div class="container px-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <img class="card-img-top" src="{{ persona.foto.url }}" alt="Foto de {{ persona.nombre }}">
+                <div class="card-body">
+                    <h4 class="card-title text-center">{{ persona.nombre }} {{ persona.apellido }}</h4>
+                    <p class="card-text"><strong>RUT: </strong>{{ persona.rut }}</p>
+                    <p class="card-text"><strong>Fecha de Nacimiento: </strong>{{ persona.fnacto }}</p>
+                    <p class="card-text"><strong>E-Mail: </strong>{{ persona.correo }}</p>
+                    <p class="card-text"><strong>Sexo: </strong>{{ persona.get_sexo_display }}</p>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'modificar' persona.rut %}" role="button" class="btn  text-light" style="background-color: #7241b4; color: white; border-color: #7241b4;">Modificar</a>
+                        <a href="{% url 'eliminar' persona.rut %}" role="button" class="btn btn-danger text-light">Eliminar</a>
+                        <a href='{% url "personas" %}' role='button' class="btn btn-secondary">Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

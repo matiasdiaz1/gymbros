@@ -1,0 +1,26 @@
+{% extends "gymapp/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Crear Nueva Mancuerna</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <div class="form-group">
+                                <label for="id_stock">Stock:</label>
+                                <input type="number" name="stock" class="form-control" id="id_stock" min="0" required>
+                            </div>
+                            <button type="submit" class="btn mt-3" style="background-color: #7241b4; color: white; border-color: #7241b4;">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

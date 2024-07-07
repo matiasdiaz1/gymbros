@@ -1,0 +1,75 @@
+
+{% extends "gymapp/base.html" %}
+{% load static %}
+{% block contenido %}
+    <div class="container">
+        <div class="text-center pt-5 pb-3">
+            <div class="p-3 mb-2" style="background-color: #7241b4; color: white; border-color: #7241b4;">
+                <h1 class="display-4 font-weight-bold">Indicadores Económicos</h1>
+            </div>
+        </div>
+
+        <div class="row pt-3">
+            <div class="col-md-4 mb-3">
+                <div class="card text-white" style="background-color: #28a745;">
+                    <div class="card-body">
+                        <h5 class="card-title">Valor Dólar</h5>
+                        <p class="card-text">
+                            <span id="loader" class="spinner-border spinner-border-sm text-light" role="status"></span>
+                            <span class="textloader">Cargando...</span>
+                        </p>
+                        <p class="h3" id="dolar"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white" style="background-color: #007bff;">
+                    <div class="card-body">
+                        <h5 class="card-title">Valor UF</h5>
+                        <p class="card-text">
+                            <span id="loaderuf" class="spinner-border spinner-border-sm text-light"
+                                role="status"></span>
+                            <span class="textloader">Cargando...</span>
+                        </p>
+                        <p class="h3" id="uf"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white" style="background-color: #ff9800;">
+                    <div class="card-body">
+                        <h5 class="card-title">Valor Bitcoin</h5>
+                        <p class="card-text">
+                            <span id="loaderbtc" class="spinner-border spinner-border-sm text-light"
+                                role="status"></span>
+                            <span class="textloader">Cargando...</span>
+                        </p>
+                        <p class="h3" id="bitcoin"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'gymapp/js/jquery-3.7.1.min.js' %}"></script>
+    <script>
+    $(document).ready(function () {
+        console.log("Esperando datos......");
+    
+        $.getJSON('https://mindicador.cl/api', function(data) {
+            $(".spinner-border").hide();
+            $(".textloader").hide();
+            
+            $("#dolar").text('$' + data.dolar.valor);
+            $("#uf").text("$" + data.uf.valor);
+            $("#bitcoin").text("$" + data.bitcoin.valor);
+        }).fail(function() {
+            console.log('Error al consumir la API!');
+            $("#dolar").text("No se pudo obtener");
+            $("#uf").text("No se pudo obtener");
+            $("#bitcoin").text("No se pudo obtener");
+            $("#dolar, #uf, #bitcoin").addClass("text-danger h6");
+        });
+    });
+    </script>
+    {% endblock contenido %}

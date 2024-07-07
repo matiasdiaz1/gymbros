@@ -1,0 +1,37 @@
+{% extends "gymapp/base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Carrusel (mantener si es necesario, no especificado en el código proporcionado) -->
+
+    <div class="mt-4 p-2 bg-light text-dark rounded text-center">
+        <h1 class="display-1">Mejores productos</h1>
+    </div>
+
+    <div class="row mt-4">
+        {% for mancuerna in mancuernas %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{% static 'gymapp/img/nuevas-mancu.jpg' %}" class="card-img-top" alt="Mancuernas">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Mancuernas {{ mancuerna.peso }} kg</h5>
+                        <p class="card-text">Precio: ${{ mancuerna.precio }}</p>
+                        <div class="mt-auto">
+                            {% if user.is_authenticated %}
+                                <form action="{% url 'agregar_al_carrito' mancuerna.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-primary btn-block" style="background-color: #7241b4; color: white; border-color: #7241b4;">Agregar al carrito</button>
+                                </form>
+                            {% else %}
+                                <a class="btn btn-secondary btn-block" style="background-color: #7241b4; color: white; border-color: #7241b4;" href="{% url 'login' %}?next={{ request.path }}">Iniciar sesión para comprar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock contenido %}

@@ -1,0 +1,45 @@
+{% extends "gymapp/base.html" %}
+{% load static %}
+
+
+
+{% block contenido %}
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Registro de Personas</h2>
+        <div class="d-flex justify-content-end mb-2">
+            <a href="{% url 'crearpersona' %}" role="button" class="btn"  style="background-color: #7241b4; color: white; border-color: #7241b4;">+ Agregar Persona</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">IMAGEN</th>
+                        <th scope="col">RUT</th>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">APELLIDO</th>
+                        <th scope="col">F. NACIMIENTO</th>
+                        <th scope="col">E-MAIL</th>
+                        <th scope="col">SEXO</th>
+                        <th scope="col">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in personas %}
+                    <tr>
+                        <td><img src="{{ p.foto.url }}" alt="foto" class="img-thumbnail" width="100"></td>
+                        <td>{{ p.rut }}</td>
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.apellido }}</td>
+                        <td>{{ p.fnacto }}</td>
+                        <td>{{ p.correo }}</td>
+                        <td>{{ p.sexo }}</td>
+                        <td>
+                            <a href="{% url 'detallepersona' p.rut %}" role="button" class="btn btn-info btn-sm "  style="background-color: #7241b4; color: white; border-color: #7241b4;">Ver detalle</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenido %}

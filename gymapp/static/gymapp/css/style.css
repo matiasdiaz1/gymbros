@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/* Aplica la fuente Poppins solo a los elementos dentro del body para evitar afectar a otros componentes como el navbar */
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.navbar.custom-navbar {
+    background-color: #7241b4;
+}
+
+.navbar .dropdown-menu .drophovercustom {
+    color: white;
+}
+
+.navbar .dropdown-menu .drophovercustom:hover {
+    background: #422770;
+    color: white;
+}
+
+.navbar .nav-link {
+    color: white;
+}
+
+.navbar .nav-link:hover {
+    color: #e0e0e0; /* Un tono más claro de blanco al pasar el mouse */
+}
+
+.navbar .dropdown-menu {
+    background-color: #7241b4;
+}
+
+.navbar-brand img {
+    width: 40px;
+    height: auto;
+}
+
+.navbar-brand {
+    color: white;
+    font-weight: 600; /* Hace el texto un poco más grueso */
+}
+
+

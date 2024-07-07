@@ -1,0 +1,48 @@
+{% extends "gymapp/base.html" %}
+{% load static %}
+
+{% block contenido %}
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Lista de Mancuernas</h2>
+        <div class="d-flex justify-content-end mb-2">
+            <a href="{% url 'crear_mancuerna' %}" role="button" class="btn" style="background-color: #7241b4; color: white; border-color: #7241b4;">Crear Nueva Mancuerna</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Peso</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mancuerna in mancuernas %}
+                    <tr>
+                        <td>{{ mancuerna.id }}</td>
+                        <td>{{ mancuerna.peso }} kg</td>
+                        <td>${{ mancuerna.precio }}</td>
+                        <td>{{ mancuerna.stock }}</td>
+                        <td>
+                            {% if mancuerna.stock > 0 %}
+                                <form action="{% url 'add_to_cart' mancuerna.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">Agregar al carrito</button>
+                                </form>
+                            {% else %}
+                                <span class="badge bg-danger">Agotado</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No hay mancuernas registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenido %}
