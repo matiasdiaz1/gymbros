@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in carrito_items %}
+                {% for item in request.user.carritoitem_set.all %}
                 <tr>
                     <td>{{ item.mancuerna.peso }} kg</td>
                     <td>
@@ -45,7 +45,7 @@
         <h3>Total: ${{ total }}</h3>
         <div>
             <a href="{% url 'index' %}" class="btn" style="background-color: #7241b4; color: white; border-color: #7241b4;">Seguir Comprando</a>
-            <a href="{% url 'checkout' %}" class="btn btn-success {% if not carrito_items %}disabled{% endif %}">Proceder al Pago</a>
+            <a href="{% url 'checkout' %}" class="btn btn-success {% if not request.user.carritoitem_set.all %}disabled{% endif %}">Proceder al Pago</a>
         </div>
     </div>
 </div>

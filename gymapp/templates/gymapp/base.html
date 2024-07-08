@@ -48,7 +48,7 @@
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'carrito' %}">
-                            Carrito <span class="badge bg-secondary">{{ request.session.cart|length }}</span>
+                            Carrito <span class="badge bg-secondary">{{ request.user.carritoitem_set.count }}</span>
                         </a>
                     </li>
                 </ul>
