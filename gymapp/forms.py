@@ -143,13 +143,13 @@ class PagoForm(forms.Form):
     MESES = [(str(i).zfill(2), str(i).zfill(2)) for i in range(1, 13)]
     
 
-    ANOS = [(str(i)[-2:], str(i)) for i in range(2024, 2055)]
+    AÑOS = [(str(i)[-2:], str(i)) for i in range(2024, 2055)]
     
     mes_vencimiento = forms.ChoiceField(choices=MESES, widget=forms.Select(attrs={
         'placeholder': 'MM'
     }))
     
-    ano_vencimiento = forms.ChoiceField(choices=ANOS, widget=forms.Select(attrs={
+    año_vencimiento = forms.ChoiceField(choices=AÑOS, widget=forms.Select(attrs={
         'placeholder': 'YY'
     }))
     
