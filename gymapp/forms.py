@@ -34,7 +34,6 @@ class PedidoForm(forms.ModelForm):
         ('', 'Selecciona una región'),
         ('BioBio', 'Región del Biobío'),
         ('Santiago', 'Región Metropolitana de Santiago'),
-        # Agrega más regiones según sea necesario
     ]
 
     COMUNA_CHOICES = [
@@ -83,7 +82,6 @@ class PedidoForm(forms.ModelForm):
         ('LaPintana', 'La Pintana'),
         ('ElBosque', 'El Bosque'),
         ('SanRamon', 'San Ramón'),
-        # Agrega más comunas según sea necesario
     ]
 
     region = forms.ChoiceField(choices=REGION_CHOICES, widget=forms.Select(attrs={
