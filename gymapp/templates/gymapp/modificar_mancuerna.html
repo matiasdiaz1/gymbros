@@ -12,8 +12,8 @@
                             {% csrf_token %}
                             {{ form.as_p }}
                             <div class="d-flex justify-content-between mt-3">
+                                <button type="submit" class="btn" style="background-color: #7241b4; color: white; border-color: #7241b4;">Guardar Cambios</button>
                                 <a href="{% url 'lista_mancuernas' %}" class="btn btn-secondary">Cancelar</a>
-                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                             </div>
                         </form>
                     </div>

@@ -1,59 +1,75 @@
 {% extends "gymapp/base.html" %}
+{% load static %}
+
 {% block contenido %}
-<div class="container">
-    <h2>Administración de Pedidos</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID Pedido</th>
-                <th>Usuario</th>
-                <th>Productos</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pedido in pedidos %}
-            <tr>
-                <td>{{ pedido.id }}</td>
-                <td>{{ pedido.user.username }}</td>
-                <td>
-                    <ul>
-                        {% for detalle in detalles_pedidos %}
-                        {% if detalle.pedido.id == pedido.id %}
-                        <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}
-                        </li>
-                        {% endif %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Administración de Pedidos</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">ID Pedido</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Productos</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in pedidos %}
+                        <tr>
+                            <td>{{ pedido.id }}</td>
+                            <td>{{ pedido.user.username }}</td>
+                            <td>
+                                <ul class="list-unstyled">
+                                    {% for detalle in detalles_pedidos %}
+                                    {% if detalle.pedido.id == pedido.id %}
+                                    <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}</li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>${{ pedido.total }}</td>
+                            <td>
+                                <form method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                                    <select name="estado" class="form-select form-select-sm">
+                                        <option value="Pendiente" {% if pedido.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                        <option value="Enviado" {% if pedido.estado == 'Enviado' %}selected{% endif %}>Enviado</option>
+                                        <option value="Entregado" {% if pedido.estado == 'Entregado' %}selected{% endif %}>Entregado</option>
+                                        <option value="Cancelado" {% if pedido.estado == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                                    </select>
+                                    <button type="submit" name="update" class="btn btn-sm mt-1" style="background-color: #7241b4; color: white; border-color: #7241b4;">Actualizar</button>
+                                </form>
+                            </td>
+                            <td>{{ pedido.created_at }}</td>
+                            <td>
+                                <form method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                                    <button type="submit" name="delete" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                                <button type="button" class="btn btn-sm" style="background-color: #7241b4; color: white; border-color: #7241b4;" data-bs-toggle="modal" data-bs-target="#direccionModal" onclick="showDireccion('{{ pedido.direccion_entrega }}')">
+                                    Ver Dirección
+                                </button>
+                            </td>
+                        </tr>
                         {% endfor %}
-                    </ul>
-                </td>
-                <td>${{ pedido.total }}</td>
-                <td>
-                    <form method="post" class="d-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
-                        {{ form.estado }}
-                        <button type="submit" name="update" class="btn btn-primary btn-sm">Actualizar</button>
-                    </form>
-                </td>
-                <td>{{ pedido.created_at }}</td>
-                <td>
-                    <form method="post" class="d-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
-                        <button type="submit" name="delete" class="btn btn-danger btn-sm">Eliminar</button>
-                    </form>
-                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#direccionModal" onclick="showDireccion('{{ pedido.direccion_entrega }}')">
-                        Ver Dirección
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    </tbody>
+                </table>
+                {% if not pedidos %}
+                <div class="text-center">
+                    <p>No hay pedidos registrados.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -79,6 +95,5 @@
         document.getElementById('direccionContent').innerText = direccion;
     }
 </script>
-
 
 {% endblock contenido %}

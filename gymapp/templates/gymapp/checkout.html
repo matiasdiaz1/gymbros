@@ -4,45 +4,51 @@
     <form method="post">
         {% csrf_token %}
         <div class="row">
+            <!-- Información de Envío -->
             <div class="col-md-6">
                 <h3 class="mb-3">Información de Envío</h3>
-                <div class="card p-3 mb-4">
+                <div class="card shadow-sm p-3 mb-4">
                     {{ pedido_form.as_p }}
                 </div>
             </div>
+            <!-- Información de Pago -->
             <div class="col-md-6">
                 <h3 class="mb-3">Información de Pago</h3>
-                <div class="card p-3 mb-4">
+                <div class="card shadow-sm p-3 mb-4">
                     {{ pago_form.as_p }}
                 </div>
             </div>
         </div>
+        <!-- Resumen del Pedido -->
         <h3 class="mb-3">Resumen del Pedido</h3>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Mancuerna</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in carrito_items %}
-                    <tr>
-                        <td>{{ item.mancuerna.peso }} kg</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>${{ item.mancuerna.precio }}</td>
-                        <td>${{ item.total_price }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="card shadow-sm p-3 mb-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Mancuerna</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in carrito_items %}
+                        <tr>
+                            <td>{{ item.mancuerna.peso }} kg</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.mancuerna.precio }}</td>
+                            <td>${{ item.total_price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <!-- Total y Realizar Pedido -->
         <div class="d-flex justify-content-between mt-4">
             <h3>Total: ${{ total }}</h3>
-            <button type="submit" class="btn btn-primary btn-lg">Realizar Pedido</button>
+            <button type="submit" class="btn btn-lg" style="background-color: #7241b4; color: white; border-color: #7241b4;">Realizar Pedido</button>
         </div>
     </form>
 </div>

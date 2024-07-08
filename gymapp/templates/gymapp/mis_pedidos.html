@@ -1,34 +1,42 @@
 {% extends "gymapp/base.html" %}
+{% load static %}
+
 {% block contenido %}
-<div class="container">
-    <h2>Mis Pedidos</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID Pedido</th>
-                <th>Productos</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pedido in pedidos %}
-            <tr>
-                <td>{{ pedido.id }}</td>
-                <td>
-                    <ul>
-                        {% for detalle in pedido.detalles.all %}
-                            <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>${{ pedido.total }}</td>
-                <td>{{ pedido.estado }}</td>
-                <td>{{ pedido.created_at }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Mis Pedidos</h2>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID Pedido</th>
+                    <th scope="col">Productos</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ pedido.id }}</td>
+                    <td>
+                        <ul>
+                            {% for detalle in pedido.detalles.all %}
+                                <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>${{ pedido.total }}</td>
+                    <td>{{ pedido.estado }}</td>
+                    <td>{{ pedido.created_at }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No hay pedidos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock contenido %}

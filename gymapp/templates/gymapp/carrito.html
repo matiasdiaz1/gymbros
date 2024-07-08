@@ -21,7 +21,7 @@
                         <form action="{% url 'actualizar_carrito' item.id %}" method="post" class="d-inline">
                             {% csrf_token %}
                             <input type="number" name="cantidad" value="{{ item.quantity }}" min="1" max="{{ item.mancuerna.stock }}" class="form-control d-inline w-auto">
-                            <button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
+                            <button type="submit" class="btn btn-sm" style="background-color: #7241b4; color: white; border-color: #7241b4;">Actualizar</button>
                         </form>
                     </td>
                     <td>${{ item.mancuerna.precio }}</td>
@@ -44,8 +44,8 @@
     <div class="d-flex justify-content-between mt-4">
         <h3>Total: ${{ total }}</h3>
         <div>
-            <a href="{% url 'index' %}" class="btn btn-primary me-2">Seguir Comprando</a>
-            <a href="{% url 'checkout' %}" class="btn btn-success">Proceder al Pago</a>
+            <a href="{% url 'index' %}" class="btn" style="background-color: #7241b4; color: white; border-color: #7241b4;">Seguir Comprando</a>
+            <a href="{% url 'checkout' %}" class="btn btn-success {% if not carrito_items %}disabled{% endif %}">Proceder al Pago</a>
         </div>
     </div>
 </div>
