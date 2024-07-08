@@ -16,7 +16,6 @@ def index(request):
     mancuernas = Mancuerna.objects.all()[:6]
     return render(request, 'gymapp/index.html', {'mancuernas': mancuernas})
 
-
 @login_required
 def personas(request):
     people = Persona.objects.all()  
@@ -42,10 +41,10 @@ def crearpersona(request):
 @login_required
 def detallepersona(request, id):
     persona = get_object_or_404(Persona, rut=id)
-    mancuernas = Mancuerna.objects.filter(propietario=persona)  
+    mancuernas = Mancuerna.objects.all()
     datos = {
         "persona": persona,
-        "mancuerna": mancuernas  
+        "mancuernas": mancuernas
     }
     return render(request, 'gymapp/detallepersona.html', datos)
 
@@ -79,6 +78,29 @@ def eliminar(request, id):
         "persona": persona
     }
     return render(request, 'gymapp/eliminar.html', datos)
+
+
+@login_required
+def modificar_mancuerna(request, id):
+    mancuerna = get_object_or_404(Mancuerna, id=id)
+    if request.method == 'POST':
+        form = MancuernaForm(request.POST, instance=mancuerna)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Mancuerna modificada exitosamente.')
+            return redirect('lista_mancuernas')
+    else:
+        form = MancuernaForm(instance=mancuerna)
+    return render(request, 'gymapp/modificar_mancuerna.html', {'form': form})
+
+@login_required
+def eliminar_mancuerna(request, id):
+    mancuerna = get_object_or_404(Mancuerna, id=id)
+    if request.method == 'POST':
+        mancuerna.delete()
+        messages.success(request, 'Mancuerna eliminada exitosamente.')
+        return redirect('lista_mancuernas')
+    return render(request, 'gymapp/eliminar_mancuerna.html', {'mancuerna': mancuerna})
 
 @login_required
 def lista_mancuernas(request):
@@ -116,8 +138,6 @@ def registro(request):
 def monedas(request):
     return render(request, 'gymapp/monedas.html')
 
-
-
 @login_required
 def carrito(request):
     carrito_items = CarritoItem.objects.filter(user=request.user)
@@ -129,7 +149,13 @@ def agregar_al_carrito(request, mancuerna_id):
     mancuerna = get_object_or_404(Mancuerna, id=mancuerna_id)
     carrito_item, created = CarritoItem.objects.get_or_create(user=request.user, mancuerna=mancuerna)
     if not created:
-        carrito_item.quantity += 1
+        if carrito_item.quantity < mancuerna.stock:
+            carrito_item.quantity += 1
+            carrito_item.save()
+        else:
+            messages.error(request, 'No hay suficiente stock disponible.')
+    else:
+        carrito_item.quantity = 1
         carrito_item.save()
     messages.success(request, 'Mancuerna agregada al carrito.')
     return redirect('carrito')
@@ -139,6 +165,19 @@ def eliminar_del_carrito(request, item_id):
     carrito_item = get_object_or_404(CarritoItem, id=item_id, user=request.user)
     carrito_item.delete()
     messages.success(request, 'Mancuerna eliminada del carrito.')
+    return redirect('carrito')
+
+@login_required
+def actualizar_carrito(request, item_id):
+    carrito_item = get_object_or_404(CarritoItem, id=item_id, user=request.user)
+    if request.method == 'POST':
+        nueva_cantidad = int(request.POST.get('cantidad'))
+        if nueva_cantidad <= carrito_item.mancuerna.stock:
+            carrito_item.quantity = nueva_cantidad
+            carrito_item.save()
+            messages.success(request, 'Cantidad actualizada exitosamente.')
+        else:
+            messages.error(request, 'No hay suficiente stock disponible.')
     return redirect('carrito')
 
 @login_required

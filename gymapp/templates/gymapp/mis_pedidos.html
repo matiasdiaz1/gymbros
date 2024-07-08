@@ -18,10 +18,8 @@
                 <td>{{ pedido.id }}</td>
                 <td>
                     <ul>
-                        {% for detalle in detalles_pedidos %}
-                            {% if detalle.pedido.id == pedido.id %}
-                                <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}</li>
-                            {% endif %}
+                        {% for detalle in pedido.detalles.all %}
+                            <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}</li>
                         {% endfor %}
                     </ul>
                 </td>

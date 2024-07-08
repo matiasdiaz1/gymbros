@@ -26,7 +26,7 @@ class Mancuerna(models.Model):
     peso = models.IntegerField(validators=[MinValueValidator(1)])
     precio = models.IntegerField(validators=[MinValueValidator(1)])
     stock = models.PositiveIntegerField(default=0)
-    propietario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='mancuernas')
+
 
     def __str__(self):
         return f"Mancuerna de {self.peso} kg - ${self.precio} (Stock: {self.stock})"
@@ -55,7 +55,7 @@ class Pedido(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pedidos')
     total = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente')
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='Pendiente')
     direccion_entrega = models.TextField()
 
     def __str__(self):
@@ -65,7 +65,7 @@ class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, related_name='detalles', on_delete=models.CASCADE)
     mancuerna = models.ForeignKey(Mancuerna, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField()
-    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
 
     def __str__(self):
         return f"{self.cantidad} x {self.mancuerna.peso}kg en Pedido {self.pedido.id}"

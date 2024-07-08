@@ -1,36 +1,52 @@
 {% extends "gymapp/base.html" %}
 {% block contenido %}
-<div class="container">
-    <h2>Carrito de Compras</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Mancuerna</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Total</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in carrito_items %}
-            <tr>
-                <td>{{ item.mancuerna.peso }} kg</td>
-                <td>{{ item.quantity }}</td>
-                <td>${{ item.mancuerna.precio }}</td>
-                <td>${{ item.total_price }}</td>
-                <td>
-                    <form action="{% url 'eliminar_del_carrito' item.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h3>Total: ${{ total }}</h3>
-    <a href="{% url 'index' %}" class="btn btn-primary">Seguir Comprando</a>
-    <a href="{% url 'checkout' %}" class="btn btn-success">Proceder al Pago</a>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Carrito de Compras</h2>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Mancuerna</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito_items %}
+                <tr>
+                    <td>{{ item.mancuerna.peso }} kg</td>
+                    <td>
+                        <form action="{% url 'actualizar_carrito' item.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="number" name="cantidad" value="{{ item.quantity }}" min="1" max="{{ item.mancuerna.stock }}" class="form-control d-inline w-auto">
+                            <button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
+                        </form>
+                    </td>
+                    <td>${{ item.mancuerna.precio }}</td>
+                    <td>${{ item.total_price }}</td>
+                    <td>
+                        <form action="{% url 'eliminar_del_carrito' item.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No hay artículos en el carrito.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+        <h3>Total: ${{ total }}</h3>
+        <div>
+            <a href="{% url 'index' %}" class="btn btn-primary me-2">Seguir Comprando</a>
+            <a href="{% url 'checkout' %}" class="btn btn-success">Proceder al Pago</a>
+        </div>
+    </div>
 </div>
 {% endblock contenido %}

@@ -4,14 +4,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 class PersonaForm(forms.ModelForm):
+    rut = forms.CharField(help_text="Ingrese rut sin puntos y con guión")
+    fnacto = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label="Fecha de Nacimiento")
+
     class Meta:
         model = Persona
-        fields = '__all__'
+        fields = ['rut', 'nombre', 'apellido', 'foto', 'fnacto', 'correo', 'sexo']
 
 class UpdatePersonaForm(forms.ModelForm):
+    fnacto = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label="Fecha de Nacimiento")
+
     class Meta:
         model = Persona
-        fields = '__all__'
+        fields = ['nombre', 'apellido', 'foto', 'fnacto', 'correo', 'sexo']
 
 class MancuernaForm(forms.ModelForm):
     class Meta:
@@ -57,11 +62,7 @@ class PagoForm(forms.Form):
     cvv = forms.CharField(max_length=3, widget=forms.TextInput(attrs={
         'placeholder': 'CVV'
     }))
-    rut_dueno_tarjeta = forms.CharField(max_length=12, widget=forms.TextInput(attrs={
-        'placeholder': 'RUT dueño de tarjeta'
-    }))
-    
-    
+
 class UpdatePedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido

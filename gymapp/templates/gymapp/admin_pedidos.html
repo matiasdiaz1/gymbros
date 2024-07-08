@@ -22,9 +22,10 @@
                 <td>
                     <ul>
                         {% for detalle in detalles_pedidos %}
-                            {% if detalle.pedido.id == pedido.id %}
-                                <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}</li>
-                            {% endif %}
+                        {% if detalle.pedido.id == pedido.id %}
+                        <li>{{ detalle.mancuerna.peso }} kg - {{ detalle.cantidad }} x ${{ detalle.precio_unitario }}
+                        </li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </td>
@@ -44,10 +45,40 @@
                         <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
                         <button type="submit" name="delete" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
+                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#direccionModal" onclick="showDireccion('{{ pedido.direccion_entrega }}')">
+                        Ver Dirección
+                    </button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="direccionModal" tabindex="-1" aria-labelledby="direccionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="direccionModalLabel">Dirección de Entrega</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="direccionContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showDireccion(direccion) {
+        document.getElementById('direccionContent').innerText = direccion;
+    }
+</script>
+
+
 {% endblock contenido %}

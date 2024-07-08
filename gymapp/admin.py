@@ -7,7 +7,7 @@ class PersonaAdmin(admin.ModelAdmin):
     list_filter = ('sexo',)
 
 class MancuernaAdmin(admin.ModelAdmin):
-    list_display = ('peso', 'precio', 'stock', 'propietario')
+    list_display = ('peso', 'precio', 'stock')
     search_fields = ('peso', 'precio')
     list_filter = ('peso', 'precio')
 

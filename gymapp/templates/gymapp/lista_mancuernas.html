@@ -16,6 +16,7 @@
                         <th scope="col">Precio</th>
                         <th scope="col">Stock</th>
                         <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,13 +28,17 @@
                         <td>{{ mancuerna.stock }}</td>
                         <td>
                             {% if mancuerna.stock > 0 %}
-                                <form action="{% url 'add_to_cart' mancuerna.id %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-success">Agregar al carrito</button>
-                                </form>
+                                <span class="badge bg-success">Disponible</span>
                             {% else %}
                                 <span class="badge bg-danger">Agotado</span>
                             {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'modificar_mancuerna' mancuerna.id %}" class="btn btn-warning btn-sm">Modificar</a>
+                            <form action="{% url 'eliminar_mancuerna' mancuerna.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                     {% empty %}
