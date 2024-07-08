@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -236,3 +237,4 @@ def admin_pedidos(request):
     pedidos = Pedido.objects.all()
     detalles_pedidos = DetallePedido.objects.all()
     return render(request, 'gymapp/admin_pedidos.html', {'pedidos': pedidos, 'detalles_pedidos': detalles_pedidos, 'form': UpdatePedidoForm()})
+
