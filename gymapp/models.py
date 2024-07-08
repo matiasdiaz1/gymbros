@@ -56,7 +56,12 @@ class Pedido(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='Pendiente')
-    direccion_entrega = models.TextField()
+    
+    region = models.CharField(max_length=100, default='Región Desconocida')
+    comuna = models.CharField(max_length=100, default='Comuna Desconocida')
+    calle = models.CharField(max_length=100, default='Calle Desconocida')
+    numero = models.CharField(max_length=10, default='0')
+    dpto_casa_oficina = models.CharField(max_length=100, blank=True, null=True, default='')
 
     def __str__(self):
         return f"Pedido {self.id} - {self.user.username}"

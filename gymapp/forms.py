@@ -30,13 +30,95 @@ class CarritoItemForm(forms.ModelForm):
         fields = '__all__'
 
 class PedidoForm(forms.ModelForm):
+    REGION_CHOICES = [
+        ('', 'Selecciona una región'),
+        ('BioBio', 'Región del Biobío'),
+        ('Santiago', 'Región Metropolitana de Santiago'),
+        # Agrega más regiones según sea necesario
+    ]
+
+    COMUNA_CHOICES = [
+        ('', 'Selecciona una comuna'),
+        ('Concepcion', 'Concepción'),
+        ('Talcahuano', 'Talcahuano'),
+        ('Hualpén', 'Hualpén'),
+        ('SanPedro', 'San Pedro de la Paz'),
+        ('Coronel', 'Coronel'),
+        ('Lota', 'Lota'),
+        ('Chiguayante', 'Chiguayante'),
+        ('Hualqui', 'Hualqui'),
+        ('Penco', 'Penco'),
+        ('Tome', 'Tomé'),
+        ('SantaJuana', 'Santa Juana'),
+        ('SantiagoCentro', 'Santiago Centro'),
+        ('LasCondes', 'Las Condes'),
+        ('Providencia', 'Providencia'),
+        ('Ñuñoa', 'Ñuñoa'),
+        ('LaFlorida', 'La Florida'),
+        ('PuenteAlto', 'Puente Alto'),
+        ('Maipu', 'Maipú'),
+        ('SanBernardo', 'San Bernardo'),
+        ('LaCisterna', 'La Cisterna'),
+        ('LaGranja', 'La Granja'),
+        ('LoEspejo', 'Lo Espejo'),
+        ('PedroAguirreCerda', 'Pedro Aguirre Cerda'),
+        ('SanMiguel', 'San Miguel'),
+        ('Independencia', 'Independencia'),
+        ('Recoleta', 'Recoleta'),
+        ('Quilicura', 'Quilicura'),
+        ('Renca', 'Renca'),
+        ('Conchali', 'Conchalí'),
+        ('Huechuraba', 'Huechuraba'),
+        ('QuintaNormal', 'Quinta Normal'),
+        ('LoPrado', 'Lo Prado'),
+        ('CerroNavia', 'Cerro Navia'),
+        ('Pudahuel', 'Pudahuel'),
+        ('EstacionCentral', 'Estación Central'),
+        ('LoBarnechea', 'Lo Barnechea'),
+        ('Vitacura', 'Vitacura'),
+        ('LaReina', 'La Reina'),
+        ('Peñalolen', 'Peñalolén'),
+        ('Macul', 'Macul'),
+        ('SanJoaquin', 'San Joaquín'),
+        ('LaPintana', 'La Pintana'),
+        ('ElBosque', 'El Bosque'),
+        ('SanRamon', 'San Ramón'),
+        # Agrega más comunas según sea necesario
+    ]
+
+    region = forms.ChoiceField(choices=REGION_CHOICES, widget=forms.Select(attrs={
+        'placeholder': 'Selecciona una región',
+        'onchange': 'habilitar_comuna()'
+    }), label="Región")
+
+    comuna = forms.ChoiceField(choices=COMUNA_CHOICES, widget=forms.Select(attrs={
+        'placeholder': 'Selecciona una comuna',
+        'disabled': 'disabled'
+    }), label="Comuna")
+
+    calle = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Ingresa el nombre de la calle y número'
+    }), label="Calle")
+
+    numero = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Ingresa el número de la calle'
+    }), label="Número")
+
+    dpto_casa_oficina = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'placeholder': 'Ejem. Casa 3, Dpto 101.'
+    }), label="Dpto. / Casa / Oficina / Condominio (opcional)")
+
     class Meta:
         model = Pedido
-        fields = ['direccion_entrega']
+        fields = ['region', 'comuna', 'calle', 'numero', 'dpto_casa_oficina']
 
     direccion_entrega = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Ingresa la dirección completa'
     }))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['region'].widget.attrs.update({'onchange': 'habilitar_comuna()'})
 
 class DetallePedidoForm(forms.ModelForm):
     class Meta:

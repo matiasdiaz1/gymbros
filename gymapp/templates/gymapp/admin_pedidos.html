@@ -54,7 +54,7 @@
                                     <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
                                     <button type="submit" name="delete" class="btn btn-danger btn-sm">Eliminar</button>
                                 </form>
-                                <button type="button" class="btn btn-sm" style="background-color: #7241b4; color: white; border-color: #7241b4;" data-bs-toggle="modal" data-bs-target="#direccionModal" onclick="showDireccion('{{ pedido.direccion_entrega }}')">
+                                <button type="button" class="btn btn-sm" style="background-color: #7241b4; color: white; border-color: #7241b4;" data-bs-toggle="modal" data-bs-target="#direccionModal" onclick="showDireccion('{{ pedido.region }}', '{{ pedido.comuna }}', '{{ pedido.calle }}', '{{ pedido.numero }}', '{{ pedido.dpto_casa_oficina }}')">
                                     Ver Dirección
                                 </button>
                             </td>
@@ -91,7 +91,8 @@
 </div>
 
 <script>
-    function showDireccion(direccion) {
+    function showDireccion(region, comuna, calle, numero, dpto_casa_oficina) {
+        const direccion = `${region}, ${comuna}, ${calle} ${numero}, ${dpto_casa_oficina}`;
         document.getElementById('direccionContent').innerText = direccion;
     }
 </script>
