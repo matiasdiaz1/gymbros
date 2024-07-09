@@ -2,10 +2,9 @@
 {% load crispy_forms_tags %}
 {% block contenido %}
 <div class="container my-5">
-    <form method="post">
+    <form method="post" id="checkoutForm">
         {% csrf_token %}
         <div class="row">
-
             <div class="col-md-6">
                 <h3 class="mb-3">Información de Envío</h3>
                 <div class="card shadow-sm p-3 mb-4">
@@ -54,21 +53,62 @@
     </form>
 </div>
 
-
-
 <script>
-    function habilitar_comuna() {
-        var region = document.getElementById("id_region").value;
-        var comuna = document.getElementById("id_comuna");
-        if (region) {
-            comuna.disabled = false;
-        } else {
-            comuna.disabled = true;
+    document.addEventListener('DOMContentLoaded', function() {
+        const regionSelect = document.getElementById('id_region');
+        const comunaSelect = document.getElementById('id_comuna');
+
+        regionSelect.addEventListener('change', function() {
+            const selectedRegion = this.value;
+            comunaSelect.innerHTML = '<option value="">Selecciona una comuna</option>';
+            comunaSelect.disabled = true;
+
+            if (selectedRegion) {
+                fetch(`/get-comunas/?region=${selectedRegion}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        for (const [value, label] of Object.entries(data)) {
+                            const option = new Option(label, value);
+                            comunaSelect.add(option);
+                        }
+                        comunaSelect.disabled = false;
+                    });
+            }
+        });
+
+        // Form submission handling
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous error messages
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+            // Validate region and comuna
+            const region = regionSelect.value;
+            const comuna = comunaSelect.value;
+            
+            if (!region) {
+                addErrorMessage('id_region', 'Por favor, selecciona una región.');
+                return;
+            }
+            
+            if (!comuna) {
+                addErrorMessage('id_comuna', 'Por favor, selecciona una comuna.');
+                return;
+            }
+
+            // If all validations pass, submit the form
+            this.submit();
+        });
+
+        function addErrorMessage(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message text-danger mt-1';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
         }
-    }
+    });
 </script>
-
-
-
 
 {% endblock contenido %}

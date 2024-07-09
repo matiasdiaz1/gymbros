@@ -1,4 +1,6 @@
 
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -206,10 +208,22 @@ def checkout(request):
             carrito_items.delete()
             messages.success(request, 'Pedido realizado con éxito.')
             return redirect('mis_pedidos')
+        else:
+            messages.error(request, 'Por favor, corrija los errores en el formulario.')
     else:
         pedido_form = PedidoForm()
         pago_form = PagoForm()
-    return render(request, 'gymapp/checkout.html', {'carrito_items': carrito_items, 'total': total, 'pedido_form': pedido_form, 'pago_form': pago_form})
+    
+    context = {
+        'carrito_items': carrito_items,
+        'total': total,
+        'pedido_form': pedido_form,
+        'pago_form': pago_form,
+        'comuna_choices': json.dumps(PedidoForm.COMUNA_CHOICES),
+    }
+    return render(request, 'gymapp/checkout.html', context)
+
+
 
 @login_required
 def mis_pedidos(request):
@@ -241,3 +255,7 @@ def admin_pedidos(request):
     detalles_pedidos = DetallePedido.objects.all()
     return render(request, 'gymapp/admin_pedidos.html', {'pedidos': pedidos, 'detalles_pedidos': detalles_pedidos, 'form': UpdatePedidoForm()})
 
+def get_comunas(request):
+    region = request.GET.get('region')
+    comunas = PedidoForm.COMUNA_CHOICES.get(region, [])
+    return JsonResponse(dict(comunas))

@@ -1,6 +1,6 @@
 from django.urls import path
 from django.urls import path
-from .views import  actualizar_carrito, admin_pedidos, agregar_al_carrito, carrito, checkout, eliminar_del_carrito, eliminar_mancuerna, index, mis_pedidos, modificar_mancuerna, monedas,  personas, detallepersona, crearpersona, modificar, \
+from .views import  actualizar_carrito, admin_pedidos, agregar_al_carrito, carrito, checkout, eliminar_del_carrito, eliminar_mancuerna, get_comunas, index, mis_pedidos, modificar_mancuerna, monedas,  personas, detallepersona, crearpersona, modificar, \
 eliminar,  crear_mancuerna, lista_mancuernas, registro
 from django.conf import settings
 from django.conf.urls.static import static
@@ -25,5 +25,6 @@ urlpatterns = [
     path('mis_pedidos/', mis_pedidos, name='mis_pedidos'),
     path('admin_pedidos/', admin_pedidos, name='admin_pedidos'),
     path('checkout/', checkout, name='checkout'),
+    path('get-comunas/', get_comunas, name='get_comunas'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

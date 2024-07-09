@@ -36,63 +36,65 @@ class PedidoForm(forms.ModelForm):
         ('Santiago', 'Región Metropolitana de Santiago'),
     ]
 
-    COMUNA_CHOICES = [
-        ('', 'Selecciona una comuna'),
-        ('Concepcion', 'Concepción'),
-        ('Talcahuano', 'Talcahuano'),
-        ('Hualpén', 'Hualpén'),
-        ('SanPedro', 'San Pedro de la Paz'),
-        ('Coronel', 'Coronel'),
-        ('Lota', 'Lota'),
-        ('Chiguayante', 'Chiguayante'),
-        ('Hualqui', 'Hualqui'),
-        ('Penco', 'Penco'),
-        ('Tome', 'Tomé'),
-        ('SantaJuana', 'Santa Juana'),
-        ('SantiagoCentro', 'Santiago Centro'),
-        ('LasCondes', 'Las Condes'),
-        ('Providencia', 'Providencia'),
-        ('Ñuñoa', 'Ñuñoa'),
-        ('LaFlorida', 'La Florida'),
-        ('PuenteAlto', 'Puente Alto'),
-        ('Maipu', 'Maipú'),
-        ('SanBernardo', 'San Bernardo'),
-        ('LaCisterna', 'La Cisterna'),
-        ('LaGranja', 'La Granja'),
-        ('LoEspejo', 'Lo Espejo'),
-        ('PedroAguirreCerda', 'Pedro Aguirre Cerda'),
-        ('SanMiguel', 'San Miguel'),
-        ('Independencia', 'Independencia'),
-        ('Recoleta', 'Recoleta'),
-        ('Quilicura', 'Quilicura'),
-        ('Renca', 'Renca'),
-        ('Conchali', 'Conchalí'),
-        ('Huechuraba', 'Huechuraba'),
-        ('QuintaNormal', 'Quinta Normal'),
-        ('LoPrado', 'Lo Prado'),
-        ('CerroNavia', 'Cerro Navia'),
-        ('Pudahuel', 'Pudahuel'),
-        ('EstacionCentral', 'Estación Central'),
-        ('LoBarnechea', 'Lo Barnechea'),
-        ('Vitacura', 'Vitacura'),
-        ('LaReina', 'La Reina'),
-        ('Peñalolen', 'Peñalolén'),
-        ('Macul', 'Macul'),
-        ('SanJoaquin', 'San Joaquín'),
-        ('LaPintana', 'La Pintana'),
-        ('ElBosque', 'El Bosque'),
-        ('SanRamon', 'San Ramón'),
-    ]
+    COMUNA_CHOICES = {
+        'BioBio': [
+            ('Concepcion', 'Concepción'),
+            ('Talcahuano', 'Talcahuano'),
+            ('Hualpén', 'Hualpén'),
+            ('SanPedro', 'San Pedro de la Paz'),
+            ('Coronel', 'Coronel'),
+            ('Lota', 'Lota'),
+            ('Chiguayante', 'Chiguayante'),
+            ('Hualqui', 'Hualqui'),
+            ('Penco', 'Penco'),
+            ('Tome', 'Tomé'),
+            ('SantaJuana', 'Santa Juana'),
+        ],
+        'Santiago': [
+            ('SantiagoCentro', 'Santiago Centro'),
+            ('LasCondes', 'Las Condes'),
+            ('Providencia', 'Providencia'),
+            ('Ñuñoa', 'Ñuñoa'),
+            ('LaFlorida', 'La Florida'),
+            ('PuenteAlto', 'Puente Alto'),
+            ('Maipu', 'Maipú'),
+            ('SanBernardo', 'San Bernardo'),
+            ('LaCisterna', 'La Cisterna'),
+            ('LaGranja', 'La Granja'),
+            ('LoEspejo', 'Lo Espejo'),
+            ('PedroAguirreCerda', 'Pedro Aguirre Cerda'),
+            ('SanMiguel', 'San Miguel'),
+            ('Independencia', 'Independencia'),
+            ('Recoleta', 'Recoleta'),
+            ('Quilicura', 'Quilicura'),
+            ('Renca', 'Renca'),
+            ('Conchali', 'Conchalí'),
+            ('Huechuraba', 'Huechuraba'),
+            ('QuintaNormal', 'Quinta Normal'),
+            ('LoPrado', 'Lo Prado'),
+            ('CerroNavia', 'Cerro Navia'),
+            ('Pudahuel', 'Pudahuel'),
+            ('EstacionCentral', 'Estación Central'),
+            ('LoBarnechea', 'Lo Barnechea'),
+            ('Vitacura', 'Vitacura'),
+            ('LaReina', 'La Reina'),
+            ('Peñalolen', 'Peñalolén'),
+            ('Macul', 'Macul'),
+            ('SanJoaquin', 'San Joaquín'),
+            ('LaPintana', 'La Pintana'),
+            ('ElBosque', 'El Bosque'),
+            ('SanRamon', 'San Ramón'),
+        ],
+    }
 
     region = forms.ChoiceField(choices=REGION_CHOICES, widget=forms.Select(attrs={
-        'placeholder': 'Selecciona una región',
-        'onchange': 'habilitar_comuna()'
-    }), label="Región")
-
-    comuna = forms.ChoiceField(choices=COMUNA_CHOICES, widget=forms.Select(attrs={
-        'placeholder': 'Selecciona una comuna',
-        'disabled': 'disabled'
-    }), label="Comuna")
+        'class': 'form-control',
+        'id': 'id_region',
+    }))
+    comuna = forms.ChoiceField(widget=forms.Select(attrs={
+        'class': 'form-control',
+        'id': 'id_comuna',
+    }))
 
     calle = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Ingresa el nombre de la calle y número'
@@ -116,7 +118,12 @@ class PedidoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['region'].widget.attrs.update({'onchange': 'habilitar_comuna()'})
+        self.fields['comuna'].choices = [('', 'Selecciona una comuna')]
+        
+        if self.is_bound or self.initial.get('region'):
+            region = self.data.get('region') or self.initial.get('region')
+            if region in self.COMUNA_CHOICES:
+                self.fields['comuna'].choices += self.COMUNA_CHOICES[region]
 
 class DetallePedidoForm(forms.ModelForm):
     class Meta:

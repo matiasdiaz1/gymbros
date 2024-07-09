@@ -3,8 +3,6 @@
 
 {% block contenido %}
 <div class="container mt-5">
-
-
     <div class="mt-4 p-2 bg-light text-dark rounded text-center">
         <h1 class="display-1">Mejores productos</h1>
     </div>
@@ -18,14 +16,18 @@
                         <h5 class="card-title">Mancuernas {{ mancuerna.peso }} kg</h5>
                         <p class="card-text">Precio: ${{ mancuerna.precio }}</p>
                         <div class="mt-auto">
-                            {% if user.is_authenticated %}
-                                <form action="{% url 'agregar_al_carrito' mancuerna.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="btn btn-primary btn-block" style="background-color: #7241b4; color: white; border-color: #7241b4;">Agregar al carrito</button>
-                                </form>
+                            {% if mancuerna.stock > 0 %}
+                                {% if user.is_authenticated %}
+                                    <form action="{% url 'agregar_al_carrito' mancuerna.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #7241b4; color: white; border-color: #7241b4;">Agregar al carrito</button>
+                                    </form>
+                                {% else %}
+                                    <a class="btn btn-secondary btn-block" style="background-color: #7241b4; color: white; border-color: #7241b4;" href="{% url 'login' %}?next={{ request.path }}">Iniciar sesión para comprar</a>
+                                {% endif %}
                             {% else %}
-                                <a class="btn btn-secondary btn-block" style="background-color: #7241b4; color: white; border-color: #7241b4;" href="{% url 'login' %}?next={{ request.path }}">Iniciar sesión para comprar</a>
+                                <button class="btn btn-danger btn-block" disabled>Agotado</button>
                             {% endif %}
                         </div>
                     </div>
