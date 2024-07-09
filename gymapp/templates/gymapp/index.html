@@ -15,6 +15,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Mancuernas {{ mancuerna.peso }} kg</h5>
                         <p class="card-text">Precio: ${{ mancuerna.precio }}</p>
+                        <p class="card-text">Stock disponible: {{ mancuerna.stock }}</p>
                         <div class="mt-auto">
                             {% if mancuerna.stock > 0 %}
                                 {% if user.is_authenticated %}
