@@ -200,6 +200,9 @@ def checkout(request):
                     cantidad=item.quantity,
                     precio_unitario=item.mancuerna.precio
                 )
+                # Disminuir el stock de la mancuerna
+                item.mancuerna.stock -= item.quantity
+                item.mancuerna.save()
             carrito_items.delete()
             messages.success(request, 'Pedido realizado con éxito.')
             return redirect('mis_pedidos')
